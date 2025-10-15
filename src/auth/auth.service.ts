@@ -1,10 +1,14 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { DoctorsService } from 'src/doctors/doctors.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private doctorService: DoctorsService) {}
+  constructor(
+    private doctorService: DoctorsService,
+    private jwtService: JwtService,
+  ) {}
   async validateUser(
     email: string,
     password: string,
@@ -19,7 +23,6 @@ export class AuthService {
   }
 
   login(userId: string) {
-    // todo add jwt token features
-    return userId;
+    return { access_token: this.jwtService.sign({ sub: userId }) };
   }
 }
