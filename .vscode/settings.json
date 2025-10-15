@@ -1,0 +1,14 @@
+{
+  // make Prettier the default formatter
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // format every time you save
+  "editor.formatOnSave": true,
+  // only format the file you just saved (faster)
+  "editor.formatOnSaveMode": "file",
+  // normalize line endings to LF
+  "files.eol": "\n",
+  // optional: format also on paste and type
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "prettier.endOfLine": "lf"
+}
