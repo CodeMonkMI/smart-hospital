@@ -5,8 +5,8 @@ import { PrescriptionsController } from './prescriptions.controller';
 import { PrescriptionsService } from './prescriptions.service';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([Prescription])],
   controllers: [PrescriptionsController],
   providers: [PrescriptionsService],
-  imports: [TypeOrmModule.forFeature([Prescription])],
 })
 export class PrescriptionsModule {}
