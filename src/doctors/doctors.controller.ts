@@ -26,8 +26,8 @@ export class DoctorsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.doctorsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return this.doctorsService.findOne(id);
   }
 
   @Patch(':id')

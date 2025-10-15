@@ -25,4 +25,8 @@ export class AuthService {
   login(userId: string) {
     return { access_token: this.jwtService.sign({ sub: userId }) };
   }
+
+  profile(userId: string) {
+    return this.doctorService.findOne(userId);
+  }
 }

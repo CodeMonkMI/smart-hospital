@@ -32,8 +32,14 @@ export class DoctorsService {
     return `This action returns all doctors`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} doctor`;
+  async findOne(id: string) {
+    const data = await this.doctorRepository.findOne({
+      where: { id },
+    });
+    return {
+      ...data,
+      password: '',
+    };
   }
 
   update(id: number, updateDoctorDto: UpdateDoctorDto) {
