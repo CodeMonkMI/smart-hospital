@@ -10,7 +10,7 @@ export class Patient {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToMany(() => Appointment, (app) => app.patient)
+  @OneToMany(() => Appointment, (app) => app.patient, { onDelete: 'SET NULL' })
   appointments: Appointment[];
 
   @Column({ type: 'varchar' })

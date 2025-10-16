@@ -18,8 +18,6 @@ export class DoctorsService {
     specialization: true,
     contact: true,
     email: true,
-    appointments: true,
-    prescriptions: true,
   };
 
   async create(createDoctorDto: CreateDoctorDto) {
@@ -28,7 +26,8 @@ export class DoctorsService {
       ...createDoctorDto,
       password: hash,
     });
-    return await this.doctorRepository.save(doctor);
+    await this.doctorRepository.save(doctor);
+    return { ...doctor, password: '' };
   }
 
   async findByEmail(email: string) {
@@ -44,9 +43,6 @@ export class DoctorsService {
       select: {
         ...this.selectedData,
       },
-      loadRelationIds: {
-        relations: ['appointments', 'prescriptions'],
-      },
     });
     return allDoctors;
   }
@@ -54,10 +50,10 @@ export class DoctorsService {
   async findOne(id: string) {
     const data = await this.doctorRepository.findOne({
       where: { id },
-      select: { ...this.selectedData },
-      loadRelationIds: {
-        relations: ['appointments', 'prescriptions'],
+      select: {
+        ...this.selectedData,
       },
+      relations: ['appointments', 'prescriptions'],
     });
     if (!data) throw new NotFoundException('User not found!');
     return data;

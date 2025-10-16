@@ -30,9 +30,9 @@ export class Doctor {
   @Column({ type: 'varchar', length: 255 })
   password: string;
 
-  @OneToMany(() => Appointment, (app) => app.doctor)
+  @OneToMany(() => Appointment, (app) => app.doctor, { onDelete: 'SET NULL' })
   appointments: Appointment[];
 
-  @OneToMany(() => Prescription, (doc) => doc.doctor)
+  @OneToMany(() => Prescription, (doc) => doc.doctor, { onDelete: 'SET NULL' })
   prescriptions: Prescription[];
 }

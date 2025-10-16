@@ -21,7 +21,7 @@ export class Appointment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Patient, (pa) => pa.appointments)
+  @ManyToOne(() => Patient, (pa) => pa.appointments, { onDelete: 'CASCADE' })
   @JoinColumn()
   patient: Patient;
 
@@ -29,7 +29,9 @@ export class Appointment {
   @JoinColumn()
   doctor: Doctor;
 
-  @OneToOne(() => Prescription, (prs) => prs.appointment)
+  @OneToOne(() => Prescription, (prs) => prs.appointment, {
+    onDelete: 'CASCADE',
+  })
   @JoinTable()
   prescriptions: Prescription;
 
