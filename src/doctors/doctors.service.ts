@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
@@ -11,6 +11,17 @@ export class DoctorsService {
     @InjectRepository(Doctor)
     private doctorRepository: Repository<Doctor>,
   ) {}
+
+  private selectedData = {
+    id: true,
+    name: true,
+    specialization: true,
+    contact: true,
+    email: true,
+    appointments: true,
+    prescriptions: true,
+  };
+
   async create(createDoctorDto: CreateDoctorDto) {
     const hash = await this.hashPassword(createDoctorDto.password);
     const doctor = this.doctorRepository.create({
@@ -28,26 +39,38 @@ export class DoctorsService {
     });
   }
 
-  findAll() {
-    return `This action returns all doctors`;
+  async findAll() {
+    const allDoctors = await this.doctorRepository.find({
+      select: {
+        ...this.selectedData,
+      },
+      loadRelationIds: {
+        relations: ['appointments', 'prescriptions'],
+      },
+    });
+    return allDoctors;
   }
 
   async findOne(id: string) {
     const data = await this.doctorRepository.findOne({
       where: { id },
+      select: { ...this.selectedData },
+      loadRelationIds: {
+        relations: ['appointments', 'prescriptions'],
+      },
     });
-    return {
-      ...data,
-      password: '',
-    };
+    if (!data) throw new NotFoundException('User not found!');
+    return data;
   }
 
-  update(id: number, updateDoctorDto: UpdateDoctorDto) {
-    return `This action updates a #${id} doctor ${JSON.stringify(updateDoctorDto)}`;
+  async update(id: string, updateDoctorDto: UpdateDoctorDto) {
+    await this.doctorRepository.update({ id }, updateDoctorDto);
+    return await this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} doctor`;
+  async remove(id: string) {
+    await this.findOne(id);
+    return await this.doctorRepository.delete({ id });
   }
 
   // private
