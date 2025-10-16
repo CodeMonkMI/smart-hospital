@@ -3,6 +3,7 @@ import { Doctor } from 'src/doctors/entities/doctor.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToOne,
   OneToOne,
@@ -15,12 +16,12 @@ export class Prescription {
   id: string;
 
   @OneToOne(() => Appointment, (app) => app.prescriptions)
-  @JoinTable()
-  appointment: string;
+  @JoinColumn()
+  appointment: Appointment;
 
   @ManyToOne(() => Doctor, (doc) => doc.prescriptions)
   @JoinTable()
-  doctor: string;
+  doctor: Doctor;
 
   @Column({ type: 'varchar', length: 255 })
   diagnosis: string;

@@ -11,7 +11,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-enum AppointmentStatus {
+export enum AppointmentStatus {
   PENDING = 'pending',
   DONE = 'done',
 }

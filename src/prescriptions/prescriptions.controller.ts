@@ -1,15 +1,16 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  HttpCode,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { PrescriptionsService } from './prescriptions.service';
 import { CreatePrescriptionDto } from './dto/create-prescription.dto';
 import { UpdatePrescriptionDto } from './dto/update-prescription.dto';
+import { PrescriptionsService } from './prescriptions.service';
 
 @Controller('prescriptions')
 export class PrescriptionsController {
@@ -27,7 +28,7 @@ export class PrescriptionsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.prescriptionsService.findOne(+id);
+    return this.prescriptionsService.findOne(id);
   }
 
   @Patch(':id')
@@ -35,11 +36,12 @@ export class PrescriptionsController {
     @Param('id') id: string,
     @Body() updatePrescriptionDto: UpdatePrescriptionDto,
   ) {
-    return this.prescriptionsService.update(+id, updatePrescriptionDto);
+    return this.prescriptionsService.update(id, updatePrescriptionDto);
   }
 
+  @HttpCode(204)
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.prescriptionsService.remove(+id);
+    return this.prescriptionsService.remove(id);
   }
 }
